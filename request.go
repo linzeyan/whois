@@ -10,7 +10,7 @@ import (
 
 const ua string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 
-//go:embed key_whoisxmlapi
+// go:embed key_whoisxmlapi
 var WhoisXMLAPIKey string
 
 func RequestWhoisXML(domain string) (*WhoisRecord, error) {
@@ -68,7 +68,7 @@ func ParserWhoisXML(data *WhoisRecord) map[string]interface{} {
 	return result
 }
 
-//go:embed key_ip2whois
+// go:embed key_ip2whois
 var IP2WhoisKey string
 
 func RequestIp2Whois(domain string) (*Ip2Whois, error) {
@@ -125,7 +125,7 @@ func ParserIp2Whois(data *Ip2Whois) map[string]interface{} {
 	return result
 }
 
-//go:embed key_whoapi
+// go:embed key_whoapi
 var WhoApiKey string
 
 func RequestWhoApi(domain string) (*WhoApi, error) {
@@ -182,7 +182,7 @@ func ParserWhoApi(data *WhoApi) map[string]interface{} {
 	return result
 }
 
-//go:embed key_apininjas
+// go:embed key_apininjas
 var ApiNinjasKey string
 
 func RequestApiNinjas(domain string) (*ApiNinjas, error) {
