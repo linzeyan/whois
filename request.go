@@ -6,16 +6,15 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
-	"reflect"
 )
 
 const ua string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
 
 //go:embed key_whoisxmlapi
-var whoisXMLApiKey string
+var WhoisXMLAPIKey string
 
 func RequestWhoisXML(domain string) (*WhoisRecord, error) {
-	apiUrl := fmt.Sprintf("https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=%s&domainName=%s&outputFormat=JSON", whoisXMLApiKey, domain)
+	apiUrl := fmt.Sprintf("https://www.whoisxmlapi.com/whoisserver/WhoisService?apiKey=%s&domainName=%s&outputFormat=JSON", WhoisXMLAPIKey, domain)
 
 	var client = &http.Client{
 		Transport: &http.Transport{
@@ -70,10 +69,10 @@ func ParserWhoisXML(data *WhoisRecord) map[string]interface{} {
 }
 
 //go:embed key_ip2whois
-var ip2WhoisApiKey string
+var IP2WhoisKey string
 
 func RequestIp2Whois(domain string) (*Ip2Whois, error) {
-	apiUrl := fmt.Sprintf("https://api.ip2whois.com/v2?key=%s&domain=%s", ip2WhoisApiKey, domain)
+	apiUrl := fmt.Sprintf("https://api.ip2whois.com/v2?key=%s&domain=%s", IP2WhoisKey, domain)
 	var client = &http.Client{
 		Transport: &http.Transport{
 			DisableKeepAlives: true,
@@ -127,10 +126,10 @@ func ParserIp2Whois(data *Ip2Whois) map[string]interface{} {
 }
 
 //go:embed key_whoapi
-var whoApiKey string
+var WhoApiKey string
 
 func RequestWhoApi(domain string) (*WhoApi, error) {
-	apiUrl := fmt.Sprintf("http://api.whoapi.com/?r=whois&apikey=%s&domain=%s", whoApiKey, domain)
+	apiUrl := fmt.Sprintf("http://api.whoapi.com/?r=whois&apikey=%s&domain=%s", WhoApiKey, domain)
 	var client = &http.Client{
 		Transport: &http.Transport{
 			DisableKeepAlives: true,
@@ -184,7 +183,7 @@ func ParserWhoApi(data *WhoApi) map[string]interface{} {
 }
 
 //go:embed key_apininjas
-var apiNinjasKey string
+var ApiNinjasKey string
 
 func RequestApiNinjas(domain string) (*ApiNinjas, error) {
 	apiUrl := fmt.Sprintf("https://api.api-ninjas.com/v1/whois?domain=%s", domain)
@@ -199,7 +198,7 @@ func RequestApiNinjas(domain string) (*ApiNinjas, error) {
 		return nil, err
 	}
 	req.Header.Set("User-Agent", ua)
-	req.Header.Set("X-Api-Key", apiNinjasKey)
+	req.Header.Set("X-Api-Key", ApiNinjasKey)
 
 	resp, err := client.Do(req)
 	if resp != nil {
@@ -231,13 +230,6 @@ func ParserApiNinjas(data *ApiNinjas) map[string]interface{} {
 	// 	"ExpiresDate": time.Unix(data.ExpirationDate, 0).Format(time.RFC3339),
 	// 	"UpdatedDate": time.Unix(data.UpdatedDate, 0).Format(time.RFC3339),
 	// }
-
-	switch a := data.CreationDate[0].(type) {
-	default:
-		fmt.Println(a)
-		fmt.Println(reflect.TypeOf(a))
-		fmt.Println(reflect.ValueOf(a))
-	}
 
 	result["NameServers"] = data.NameServers
 	result["Registrant"] = map[string]string{
