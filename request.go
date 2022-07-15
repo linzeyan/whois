@@ -5,7 +5,9 @@ import (
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"net"
 	"net/http"
+	"strings"
 )
 
 const ua string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
@@ -238,5 +240,98 @@ func ParserApiNinjas(data *ApiNinjas) map[string]interface{} {
 		"State":        data.State,
 	}
 	result["Registrar"] = data.Registrar
+	return result
+}
+
+func RequestVerisign(domain string) (string, error) {
+	conn, err := net.Dial("tcp", "whois.verisign-grs.com:43")
+	if err != nil {
+		return "", err
+	}
+	if conn != nil {
+		defer conn.Close()
+	}
+	_, err = conn.Write([]byte(domain + "\n"))
+	if err != nil {
+		return "", err
+	}
+	result, err := ioutil.ReadAll(conn)
+	if err != nil {
+		return "", err
+	}
+	return string(result), nil
+
+}
+
+func ParserVerisign(data string) map[string]interface{} {
+	var result = make(map[string]interface{})
+	replace := strings.ReplaceAll(data, ": ", ";")
+	replace1 := strings.ReplaceAll(replace, "\r\n", ",")
+	replace2 := strings.ReplaceAll(replace1, " ", "")
+	split := strings.Split(replace2, ",")
+	var audit = make(map[string]string)
+	var ns []string
+
+	for i := range split {
+		if strings.Contains(split[i], "UpdatedDate") {
+			v := strings.Split(split[i], ";")
+			audit["UpdatedDate"] = v[1]
+		}
+		if strings.Contains(split[i], "CreationDate") {
+			v := strings.Split(split[i], ";")
+			audit["CreatedDate"] = v[1]
+		}
+		if strings.Contains(split[i], "RegistryExpiryDate") {
+			v := strings.Split(split[i], ";")
+			audit["ExpiresDate"] = v[1]
+		}
+		if strings.Contains(split[i], "Registrar") {
+			v := strings.Split(split[i], ";")
+			if v[0] == "Registrar" {
+				result["Registrar"] = v[1]
+			}
+		}
+		if strings.Contains(split[i], "NameServer") {
+			v := strings.Split(split[i], ";")
+			ns = append(ns, v[1])
+		}
+	}
+	result["Audit"] = audit
+	result["NameServers"] = ns
+	return result
+}
+
+func RequestIana(domain string) (string, error) {
+	conn, err := net.Dial("tcp", "whois.iana.org:43")
+	if err != nil {
+		return "", err
+	}
+	if conn != nil {
+		defer conn.Close()
+	}
+	_, err = conn.Write([]byte(domain + "\n"))
+	if err != nil {
+		return "", err
+	}
+	result, err := ioutil.ReadAll(conn)
+	if err != nil {
+		return "", err
+	}
+	return string(result), nil
+
+}
+
+func ParserIana(data string) map[string]string {
+	var result = make(map[string]string)
+	replace := strings.ReplaceAll(data, ": ", ";")
+	replace1 := strings.ReplaceAll(replace, "\n", ",")
+	split := strings.Split(replace1, ",")
+	for i := range split {
+		if strings.Contains(split[i], "organisation") {
+			v := strings.Split(split[i], ";")
+			result["Organization"] = v[1]
+			break
+		}
+	}
 	return result
 }

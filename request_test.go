@@ -70,3 +70,54 @@ func TestApiNinjas(t *testing.T) {
 
 	fmt.Println(string(out))
 }
+
+func TestVerisign(t *testing.T) {
+	result, err := whois.RequestVerisign(domain)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	out, err := json.MarshalIndent(whois.ParserVerisign(result), "", "  ")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(out))
+}
+
+func TestIana(t *testing.T) {
+	result, err := whois.RequestIana(domain)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	out, err := json.MarshalIndent(whois.ParserIana(result), "", "  ")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(out))
+}
+
+func TestDefault(t *testing.T) {
+	resultVer, err := whois.RequestVerisign(domain)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	outVer := whois.ParserVerisign(resultVer)
+
+	result, err := whois.RequestIana(domain)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	org := whois.ParserIana(result)
+	outVer["Registrant"] = org
+	out, err := json.MarshalIndent(outVer, "", "  ")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(out))
+}
