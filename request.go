@@ -267,31 +267,32 @@ func ParseVerisign(data string) map[string]interface{} {
 	var result = make(map[string]interface{})
 	replace := strings.ReplaceAll(data, ": ", ";")
 	replace1 := strings.ReplaceAll(replace, "\r\n", ",")
-	replace2 := strings.ReplaceAll(replace1, " ", "")
-	split := strings.Split(replace2, ",")
+	fmt.Println(replace1)
+	split := strings.Split(replace1, ",")
+	fmt.Println(split)
 	var audit = make(map[string]string)
 	var ns []string
 
 	for i := range split {
-		if strings.Contains(split[i], "UpdatedDate") {
+		if strings.Contains(split[i], "Updated Date") {
 			v := strings.Split(split[i], ";")
 			audit["UpdatedDate"] = v[1]
 		}
-		if strings.Contains(split[i], "CreationDate") {
+		if strings.Contains(split[i], "Creation Date") {
 			v := strings.Split(split[i], ";")
 			audit["CreatedDate"] = v[1]
 		}
-		if strings.Contains(split[i], "RegistryExpiryDate") {
+		if strings.Contains(split[i], "Registry Expiry Date") {
 			v := strings.Split(split[i], ";")
 			audit["ExpiresDate"] = v[1]
 		}
 		if strings.Contains(split[i], "Registrar") {
 			v := strings.Split(split[i], ";")
-			if v[0] == "Registrar" {
+			if strings.TrimSpace(v[0]) == "Registrar" {
 				result["Registrar"] = v[1]
 			}
 		}
-		if strings.Contains(split[i], "NameServer") {
+		if strings.Contains(split[i], "Name Server") {
 			v := strings.Split(split[i], ";")
 			ns = append(ns, v[1])
 		}
