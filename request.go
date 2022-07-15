@@ -53,7 +53,7 @@ func RequestWhoisXML(domain string) (*WhoisRecord, error) {
 	return nil, err
 }
 
-func ParserWhoisXML(data *WhoisRecord) map[string]interface{} {
+func ParseWhoisXML(data *WhoisRecord) map[string]interface{} {
 	var result = make(map[string]interface{})
 	result["Audit"] = map[string]string{
 		"CreatedDate": data.CreatedDate,
@@ -110,7 +110,7 @@ func RequestIp2Whois(domain string) (*Ip2Whois, error) {
 	return nil, err
 }
 
-func ParserIp2Whois(data *Ip2Whois) map[string]interface{} {
+func ParseIp2Whois(data *Ip2Whois) map[string]interface{} {
 	var result = make(map[string]interface{})
 	result["Audit"] = map[string]string{
 		"CreatedDate": data.CreateDate,
@@ -167,7 +167,7 @@ func RequestWhoApi(domain string) (*WhoApi, error) {
 	return nil, err
 }
 
-func ParserWhoApi(data *WhoApi) map[string]interface{} {
+func ParseWhoApi(data *WhoApi) map[string]interface{} {
 	var result = make(map[string]interface{})
 	result["Audit"] = map[string]string{
 		"CreatedDate": data.DateCreated,
@@ -225,7 +225,7 @@ func RequestApiNinjas(domain string) (*ApiNinjas, error) {
 	return nil, err
 }
 
-func ParserApiNinjas(data *ApiNinjas) map[string]interface{} {
+func ParseApiNinjas(data *ApiNinjas) map[string]interface{} {
 	var result = make(map[string]interface{})
 	// result["Audit"] = map[string]string{
 	// 	"CreatedDate": time.Unix(data.CreationDate, 0).Format(time.RFC3339),
@@ -263,7 +263,7 @@ func RequestVerisign(domain string) (string, error) {
 
 }
 
-func ParserVerisign(data string) map[string]interface{} {
+func ParseVerisign(data string) map[string]interface{} {
 	var result = make(map[string]interface{})
 	replace := strings.ReplaceAll(data, ": ", ";")
 	replace1 := strings.ReplaceAll(replace, "\r\n", ",")
@@ -321,7 +321,7 @@ func RequestIana(domain string) (string, error) {
 
 }
 
-func ParserIana(data string) map[string]string {
+func ParseIana(data string) map[string]string {
 	var result = make(map[string]string)
 	replace := strings.ReplaceAll(data, ": ", ";")
 	replace1 := strings.ReplaceAll(replace, "\n", ",")

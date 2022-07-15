@@ -17,7 +17,7 @@ func TestWhoisXMLApi(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserWhoisXML(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseWhoisXML(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -32,7 +32,7 @@ func TestIp2Whois(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserIp2Whois(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseIp2Whois(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -47,7 +47,7 @@ func TestWhoApi(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserWhoApi(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseWhoApi(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -62,7 +62,7 @@ func TestApiNinjas(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserApiNinjas(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseApiNinjas(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -77,7 +77,7 @@ func TestVerisign(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserVerisign(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseVerisign(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -91,7 +91,7 @@ func TestIana(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParserIana(result), "", "  ")
+	out, err := json.MarshalIndent(whois.ParseIana(result), "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
@@ -105,14 +105,14 @@ func TestDefault(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	outVer := whois.ParserVerisign(resultVer)
+	outVer := whois.ParseVerisign(resultVer)
 
 	result, err := whois.RequestIana(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	org := whois.ParserIana(result)
+	org := whois.ParseIana(result)
 	outVer["Registrant"] = org
 	out, err := json.MarshalIndent(outVer, "", "  ")
 	if err != nil {
