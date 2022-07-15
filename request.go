@@ -267,9 +267,7 @@ func ParseVerisign(data string) map[string]interface{} {
 	var result = make(map[string]interface{})
 	replace := strings.ReplaceAll(data, ": ", ";")
 	replace1 := strings.ReplaceAll(replace, "\r\n", ",")
-	fmt.Println(replace1)
 	split := strings.Split(replace1, ",")
-	fmt.Println(split)
 	var audit = make(map[string]string)
 	var ns []string
 
