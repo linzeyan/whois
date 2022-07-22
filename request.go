@@ -27,6 +27,21 @@ var WhoApiKey string
 // go:embed key_apininjas
 var ApiNinjasKey string
 
+var Key string
+
+type Server interface {
+	Request(string) (*Response, error)
+}
+
+func Request(s Server, domain string) *Response {
+	resp, err := s.Request(domain)
+	if err != nil {
+		log.Println(err)
+		return nil
+	}
+	return resp
+}
+
 type Response struct {
 	Registrar   string   `json:"Registrar" yaml:"Registrar"`
 	CreatedDate string   `json:"CreatedDate" yaml:"CreatedDate"`
@@ -147,8 +162,4 @@ func ParseIana(data string) map[string]string {
 		}
 	}
 	return result
-}
-
-type Server interface {
-	Request(string) (*Response, error)
 }

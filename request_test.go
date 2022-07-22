@@ -13,51 +13,31 @@ const domain string = "google.com"
 
 func TestWhoisXMLApi(t *testing.T) {
 	var data whois.WhoisXML
-	resp, err := data.Request(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	resp := whois.Request(data, domain)
 	resp.Json()
 }
 
 func TestIp2Whois(t *testing.T) {
 	var data whois.Ip2Whois
-	resp, err := data.Request(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	resp := whois.Request(data, domain)
 	resp.Json()
 }
 
 func TestWhoApi(t *testing.T) {
 	var data whois.WhoApi
-	resp, err := data.Request(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	resp := whois.Request(data, domain)
 	resp.Yaml()
 }
 
 func TestApiNinjas(t *testing.T) {
 	var data whois.ApiNinjas
-	resp, err := data.Request(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	resp := whois.Request(data, domain)
 	resp.Json()
 }
 
 func TestVerisign(t *testing.T) {
 	var data whois.Verisign
-	resp, err := data.Request(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
+	resp := whois.Request(data, domain)
 	resp.String()
 	resp.Json()
 	resp.Yaml()
