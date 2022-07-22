@@ -18,7 +18,7 @@ var IP2WhoisKey string
 // go:embed key_whoapi
 var WhoApiKey string
 
-//go:embed key_apininjas
+// go:embed key_apininjas
 var ApiNinjasKey string
 
 type Response struct {
