@@ -2,9 +2,14 @@ package whois
 
 import (
 	_ "embed"
+	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"log"
 	"net"
 	"strings"
+
+	"gopkg.in/yaml.v3"
 )
 
 const ua string = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/103.0.0.0 Safari/537.36"
@@ -27,6 +32,28 @@ type Response struct {
 	ExpiresDate string   `json:"ExpiresDate" yaml:"ExpiresDate"`
 	UpdatedDate string   `json:"UpdatedDate" yaml:"UpdatedDate"`
 	NameServers []string `json:"NameServers" yaml:"NameServers"`
+}
+
+func (r Response) String() {
+	fmt.Printf("%s\n", r)
+}
+
+func (r Response) Json() {
+	out, err := json.MarshalIndent(r, "", "  ")
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(out))
+}
+
+func (r Response) Yaml() {
+	out, err := yaml.Marshal(r)
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(out))
 }
 
 func RequestVerisign(domain string) (string, error) {

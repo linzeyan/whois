@@ -7,7 +7,6 @@ import (
 	"testing"
 
 	"github.com/linzeyan/whois"
-	"gopkg.in/yaml.v3"
 )
 
 const domain string = "google.com"
@@ -19,12 +18,7 @@ func TestWhoisXMLApi(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(resp, "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
+	resp.Json()
 }
 
 func TestIp2Whois(t *testing.T) {
@@ -34,12 +28,7 @@ func TestIp2Whois(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(resp, "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
+	resp.Json()
 }
 
 func TestWhoApi(t *testing.T) {
@@ -49,12 +38,7 @@ func TestWhoApi(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(resp, "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
+	resp.Yaml()
 }
 
 func TestApiNinjas(t *testing.T) {
@@ -64,12 +48,7 @@ func TestApiNinjas(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(resp, "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
+	resp.Json()
 }
 
 func TestVerisign(t *testing.T) {
@@ -78,18 +57,10 @@ func TestVerisign(t *testing.T) {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParseVerisign(result), "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
-	a, err := yaml.Marshal(whois.ParseVerisign(result))
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(a))
+	out := whois.ParseVerisign(result)
+	out.String()
+	out.Json()
+	out.Yaml()
 }
 
 func TestIana(t *testing.T) {
