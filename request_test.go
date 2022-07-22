@@ -11,33 +11,50 @@ import (
 
 const domain string = "google.com"
 
+var data whois.Servers
+
 func TestWhoisXMLApi(t *testing.T) {
-	var data whois.WhoisXML
-	resp := whois.Request(data, domain)
+	data = &whois.WhoisXML{}
+	resp, err := whois.Request(data, domain)
+	if err != nil {
+		log.Println(err)
+	}
 	resp.Json()
 }
 
 func TestIp2Whois(t *testing.T) {
-	var data whois.Ip2Whois
-	resp := whois.Request(data, domain)
+	data = &whois.Ip2Whois{}
+	resp, err := whois.Request(data, domain)
+	if err != nil {
+		log.Println(err)
+	}
 	resp.Json()
 }
 
 func TestWhoApi(t *testing.T) {
-	var data whois.WhoApi
-	resp := whois.Request(data, domain)
+	data = &whois.WhoApi{}
+	resp, err := whois.Request(data, domain)
+	if err != nil {
+		log.Println(err)
+	}
 	resp.Yaml()
 }
 
 func TestApiNinjas(t *testing.T) {
-	var data whois.ApiNinjas
-	resp := whois.Request(data, domain)
+	data = &whois.ApiNinjas{}
+	resp, err := whois.Request(data, domain)
+	if err != nil {
+		log.Println(err)
+	}
 	resp.Json()
 }
 
 func TestVerisign(t *testing.T) {
-	var data whois.Verisign
-	resp := whois.Request(data, domain)
+	data = &whois.Verisign{}
+	resp, err := whois.Request(data, domain)
+	if err != nil {
+		log.Println(err)
+	}
 	resp.String()
 	resp.Json()
 	resp.Yaml()
