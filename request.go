@@ -49,31 +49,30 @@ func RequestVerisign(domain string) (string, error) {
 
 }
 
-func ParseVerisign(data string) map[string]interface{} {
-	var result = make(map[string]interface{})
+func ParseVerisign(data string) *Response {
+	var r Response
 	replace := strings.ReplaceAll(data, ": ", ";")
 	replace1 := strings.ReplaceAll(replace, "\r\n", ",")
 	split := strings.Split(replace1, ",")
-	var audit = make(map[string]string)
 	var ns []string
 
 	for i := range split {
 		if strings.Contains(split[i], "Updated Date") {
 			v := strings.Split(split[i], ";")
-			audit["UpdatedDate"] = v[1]
+			r.UpdatedDate = v[1]
 		}
 		if strings.Contains(split[i], "Creation Date") {
 			v := strings.Split(split[i], ";")
-			audit["CreatedDate"] = v[1]
+			r.CreatedDate = v[1]
 		}
 		if strings.Contains(split[i], "Registry Expiry Date") {
 			v := strings.Split(split[i], ";")
-			audit["ExpiresDate"] = v[1]
+			r.ExpiresDate = v[1]
 		}
 		if strings.Contains(split[i], "Registrar") {
 			v := strings.Split(split[i], ";")
 			if strings.TrimSpace(v[0]) == "Registrar" {
-				result["Registrar"] = v[1]
+				r.Registrar = v[1]
 			}
 		}
 		if strings.Contains(split[i], "Name Server") {
@@ -81,9 +80,8 @@ func ParseVerisign(data string) map[string]interface{} {
 			ns = append(ns, v[1])
 		}
 	}
-	result["Audit"] = audit
-	result["NameServers"] = ns
-	return result
+	r.NameServers = ns
+	return &r
 }
 
 func RequestIana(domain string) (string, error) {

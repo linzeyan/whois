@@ -7,6 +7,7 @@ import (
 	"testing"
 
 	"github.com/linzeyan/whois"
+	"gopkg.in/yaml.v3"
 )
 
 const domain string = "google.com"
@@ -83,6 +84,12 @@ func TestVerisign(t *testing.T) {
 		return
 	}
 	fmt.Println(string(out))
+	a, err := yaml.Marshal(whois.ParseVerisign(result))
+	if err != nil {
+		log.Println(err)
+		return
+	}
+	fmt.Println(string(a))
 }
 
 func TestIana(t *testing.T) {
@@ -92,29 +99,6 @@ func TestIana(t *testing.T) {
 		return
 	}
 	out, err := json.MarshalIndent(whois.ParseIana(result), "", "  ")
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	fmt.Println(string(out))
-}
-
-func TestDefault(t *testing.T) {
-	resultVer, err := whois.RequestVerisign(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	outVer := whois.ParseVerisign(resultVer)
-
-	result, err := whois.RequestIana(domain)
-	if err != nil {
-		log.Println(err)
-		return
-	}
-	org := whois.ParseIana(result)
-	outVer["Registrant"] = org
-	out, err := json.MarshalIndent(outVer, "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
