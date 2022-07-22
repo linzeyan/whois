@@ -52,15 +52,15 @@ func TestApiNinjas(t *testing.T) {
 }
 
 func TestVerisign(t *testing.T) {
-	result, err := whois.RequestVerisign(domain)
+	var data whois.Verisign
+	resp, err := data.Request(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	out := whois.ParseVerisign(result)
-	out.String()
-	out.Json()
-	out.Yaml()
+	resp.String()
+	resp.Json()
+	resp.Yaml()
 }
 
 func TestIana(t *testing.T) {
