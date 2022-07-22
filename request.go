@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
+	"reflect"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -35,7 +36,12 @@ type Response struct {
 }
 
 func (r Response) String() {
-	fmt.Printf("%s\n", r)
+	f := reflect.ValueOf(&r).Elem()
+	t := f.Type()
+	for i := 0; i < f.NumField(); i++ {
+		fmt.Printf("%s\t%v\n", t.Field(i).Name, f.Field(i).Interface())
+		//f.Field(i).Type()
+	}
 }
 
 func (r Response) Json() {
