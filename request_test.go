@@ -12,62 +12,62 @@ import (
 const domain string = "google.com"
 
 func TestWhoisXMLApi(t *testing.T) {
-	result, err := whois.RequestWhoisXML(domain)
+	var data whois.WhoisXML
+	resp, err := data.Request(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParseWhoisXML(result), "", "  ")
+	out, err := json.MarshalIndent(resp, "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	fmt.Println(string(out))
 }
 
 func TestIp2Whois(t *testing.T) {
-	result, err := whois.RequestIp2Whois(domain)
+	var data whois.Ip2Whois
+	resp, err := data.Request(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParseIp2Whois(result), "", "  ")
+	out, err := json.MarshalIndent(resp, "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	fmt.Println(string(out))
 }
 
 func TestWhoApi(t *testing.T) {
-	result, err := whois.RequestWhoApi(domain)
+	var data whois.WhoApi
+	resp, err := data.Request(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParseWhoApi(result), "", "  ")
+	out, err := json.MarshalIndent(resp, "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	fmt.Println(string(out))
 }
 
 func TestApiNinjas(t *testing.T) {
-	result, err := whois.RequestApiNinjas(domain)
+	var data whois.ApiNinjas
+	resp, err := data.Request(domain)
 	if err != nil {
 		log.Println(err)
 		return
 	}
-	out, err := json.MarshalIndent(whois.ParseApiNinjas(result), "", "  ")
+	out, err := json.MarshalIndent(resp, "", "  ")
 	if err != nil {
 		log.Println(err)
 		return
 	}
-
 	fmt.Println(string(out))
 }
 
