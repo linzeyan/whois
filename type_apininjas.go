@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io/ioutil"
 	"net/http"
+	"time"
 )
 
 type ApiNinjas struct {
@@ -62,14 +63,26 @@ func (w ApiNinjas) Request(domain string) (*Response, error) {
 		if err != nil {
 			return nil, err
 		}
-		// 	"CreatedDate": time.Unix(data.CreationDate, 0).Format(time.RFC3339),
-		// 	"ExpiresDate": time.Unix(data.ExpirationDate, 0).Format(time.RFC3339),
-		// 	"UpdatedDate": time.Unix(data.UpdatedDate, 0).Format(time.RFC3339),
+
 		var r = Response{
+			CreatedDate: w.Convert(w.CreationDate),
+			ExpiresDate: w.Convert(w.ExpirationDate),
+			UpdatedDate: w.Convert(w.UpdatedDate),
 			NameServers: w.NameServers,
 			Registrar:   w.Registrar,
 		}
 		return &r, nil
 	}
 	return nil, err
+}
+
+func (w ApiNinjas) Convert(i interface{}) string {
+	if r, ok := i.([]interface{}); ok {
+		if r1, ok := r[1].(float64); ok {
+			return time.Unix(int64(r1), 0).Format(time.RFC3339)
+		}
+	} else if r, ok := i.(float64); ok {
+		return time.Unix(int64(r), 0).Format(time.RFC3339)
+	}
+	return ""
 }
